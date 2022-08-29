@@ -1,0 +1,20 @@
+image: docker:latest
+
+
+stages:
+  - build
+  - release
+
+
+build:
+  stage: build
+  parallel:
+    matrix:
+      - SWIFT_VERSION:
+          - 5.6.2
+          - 5.5.2
+  script: |
+    IMAGE=$CI_REGISTRY_IMAGE:basic-$SWIFT_VERSION-$CI_COMMIT_SHA
+    docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    docker build --pull -t $IMAGE .
+    # docker push $IMAGE
