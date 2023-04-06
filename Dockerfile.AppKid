@@ -1,0 +1,26 @@
+ARG SWIFT_VERSION
+FROM registry.gitlab.com/finestructure/spi-images:basic-${SWIFT_VERSION}-latest
+
+RUN export DEBIAN_FRONTEND=noninteractive \
+    && apt update && apt install -y \
+    curl
+
+RUN curl -sL https://packages.lunarg.com/lunarg-signing-key-pub.asc \
+    | tee /etc/apt/trusted.gpg.d/lunarg.asc
+RUN curl -sL http://packages.lunarg.com/vulkan/lunarg-vulkan-focal.list \
+    | tee /etc/apt/sources.list.d/lunarg-vulkan-focal.list
+
+RUN export DEBIAN_FRONTEND=noninteractive \
+    && apt update && apt install -y\
+    vulkan-sdk \
+    libx11-dev \
+ 	libxi-dev \
+ 	libwayland-dev \
+ 	libcairo2-dev \
+ 	libpango1.0-dev \
+ 	libglib2.0-dev \
+    libpython3-dev \
+    libclang-12-dev
+
+RUN mkdir -p /usr/local/lib/pkgconfig && curl -sL -o /usr/local/lib/pkgconfig/clang.pc \
+    https://raw.githubusercontent.com/smumriak/AppKid/main/SupportingFiles/clang.pc
