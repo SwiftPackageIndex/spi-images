@@ -35,6 +35,36 @@ build base image:
     docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     docker push $IMAGE
 
+
+build 5.9 base image:
+  stage: base
+  only:
+    - main
+    - tags
+    - branches
+  tags:
+    - spi-server-deploy
+  parallel:
+    matrix:
+      - SWIFT_IMAGE:
+          - swiftlang/swift@sha256:61b96c099daf37c07dd03cc4c7a8c07f41c91df1a6ed8cf3d433387f0a719a9c  # swiftlang/swift:nightly-5.9-focal
+  script: |
+    BASENAME=basic
+    SHORT_SWIFT_VERSION=5.9
+    if [ -n "$CI_COMMIT_TAG" ]; then
+      IMAGE=$CI_REGISTRY_IMAGE:$BASENAME-$SHORT_SWIFT_VERSION-$CI_COMMIT_TAG
+    elif [ "$CI_COMMIT_REF_NAME" = "$CI_DEFAULT_BRANCH" ]; then
+      IMAGE=$CI_REGISTRY_IMAGE:$BASENAME-$SHORT_SWIFT_VERSION-latest
+    else
+      IMAGE=$CI_REGISTRY_IMAGE:$BASENAME-$SHORT_SWIFT_VERSION-$CI_COMMIT_REF_NAME
+    fi
+    docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    docker build --pull -t $IMAGE --build-arg SWIFT_IMAGE=$SWIFT_IMAGE \
+      -f Dockerfile.swift-nightly .
+    docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    docker push $IMAGE
+
+
 build AppKid image:
   stage: derived
   only:
