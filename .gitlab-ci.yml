@@ -86,14 +86,17 @@ build AppKid image:
     # for the derived images we don't deal with Swift patch versions
     SHORT_SWIFT_VERSION=$SWIFT_VERSION
     if [ -n "$CI_COMMIT_TAG" ]; then
+      BASE_IMAGE=$CI_REGISTRY_IMAGE:basic-$SHORT_SWIFT_VERSION-$CI_COMMIT_TAG
       IMAGE=$CI_REGISTRY_IMAGE:$BASENAME-$SHORT_SWIFT_VERSION-$CI_COMMIT_TAG
     elif [ "$CI_COMMIT_REF_NAME" = "$CI_DEFAULT_BRANCH" ]; then
+      BASE_IMAGE=$CI_REGISTRY_IMAGE:basic-$SHORT_SWIFT_VERSION-latest
       IMAGE=$CI_REGISTRY_IMAGE:$BASENAME-$SHORT_SWIFT_VERSION-latest
     else
+      BASE_IMAGE=$CI_REGISTRY_IMAGE:basic-$SHORT_SWIFT_VERSION-$CI_COMMIT_REF_NAME
       IMAGE=$CI_REGISTRY_IMAGE:$BASENAME-$SHORT_SWIFT_VERSION-$CI_COMMIT_REF_NAME
     fi
     docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-    docker build --pull -t $IMAGE --build-arg SWIFT_VERSION=$SWIFT_VERSION \
+    docker build --pull -t $IMAGE --build-arg BASE_IMAGE=$BASE_IMAGE \
       -f Dockerfile.$BASENAME .
     docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     docker push $IMAGE
