@@ -1,5 +1,5 @@
-ARG SWIFT_VERSION
-FROM registry.gitlab.com/finestructure/spi-images:basic-${SWIFT_VERSION}-latest
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE}
 
 RUN export DEBIAN_FRONTEND=noninteractive \
     && apt update && apt install -y \
