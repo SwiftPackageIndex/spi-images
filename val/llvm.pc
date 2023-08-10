@@ -1,0 +1,6 @@
+Name: LLVM
+Description: Low-level Virtual Machine compiler framework
+Version: 15.0.7
+URL: http://www.llvm.org/
+Libs: -L/usr/lib/llvm-15/lib -lLLVM-15
+Cflags: -I/usr/lib/llvm-15/include

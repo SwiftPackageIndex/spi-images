@@ -6,7 +6,7 @@ stages:
   - derived
 
 
-build base image:
+build focal base image:
   stage: base
   only:
     - main
@@ -31,12 +31,45 @@ build base image:
       IMAGE=$CI_REGISTRY_IMAGE:$BASENAME-$SHORT_SWIFT_VERSION-$CI_COMMIT_REF_NAME
     fi
     docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-    docker build --pull -t $IMAGE --build-arg SWIFT_VERSION=$SWIFT_VERSION .
+    docker build --pull -t $IMAGE --build-arg SWIFT_VERSION=$SWIFT_VERSION \
+          -f Dockerfile.base-focal .
     docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     docker push $IMAGE
 
 
-build 5.9 base image:
+build jammy base image:
+  stage: base
+  only:
+    - main
+    - tags
+    - branches
+  tags:
+    - spi-server-deploy
+  parallel:
+    matrix:
+      - SWIFT_VERSION:
+          - '5.8.0'
+          - '5.7.3'
+          - '5.6.3'
+  script: |
+    BASENAME=basic-jammy
+    SHORT_SWIFT_VERSION=${SWIFT_VERSION%.*}  # 5.7.3 -> 5.7
+    if [ -n "$CI_COMMIT_TAG" ]; then
+      IMAGE=$CI_REGISTRY_IMAGE:$BASENAME-$SHORT_SWIFT_VERSION-$CI_COMMIT_TAG
+    elif [ "$CI_COMMIT_REF_NAME" = "$CI_DEFAULT_BRANCH" ]; then
+      IMAGE=$CI_REGISTRY_IMAGE:$BASENAME-$SHORT_SWIFT_VERSION-latest
+    else
+      IMAGE=$CI_REGISTRY_IMAGE:$BASENAME-$SHORT_SWIFT_VERSION-$CI_COMMIT_REF_NAME
+    fi
+    echo IMAGE: $IMAGE
+    docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    docker build --pull -t $IMAGE --build-arg SWIFT_VERSION=$SWIFT_VERSION \
+      -f Dockerfile.base-jammy .
+    docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    docker push $IMAGE
+
+
+build 5.9 focal base image:
   stage: base
   only:
     - main
@@ -58,6 +91,37 @@ build 5.9 base image:
     else
       IMAGE=$CI_REGISTRY_IMAGE:$BASENAME-$SHORT_SWIFT_VERSION-$CI_COMMIT_REF_NAME
     fi
+    echo IMAGE: $IMAGE
+    docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    docker build --pull -t $IMAGE --build-arg SWIFT_IMAGE=$SWIFT_IMAGE \
+      -f Dockerfile.swift-5.9 .
+    docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    docker push $IMAGE
+
+
+build 5.9 jammy base image:
+  stage: base
+  only:
+    - main
+    - tags
+    - branches
+  tags:
+    - spi-server-deploy
+  parallel:
+    matrix:
+      - SWIFT_IMAGE:
+          - swiftlang/swift@sha256:33d9b7f97b2c195ba3ecebf2b2914de8cdcc2817960de73a3730beaa89061bb8  # swiftlang/swift:nightly-5.9-jammy (Aug 10, 2023)
+  script: |
+    BASENAME=basic-jammy
+    SHORT_SWIFT_VERSION=5.9
+    if [ -n "$CI_COMMIT_TAG" ]; then
+      IMAGE=$CI_REGISTRY_IMAGE:$BASENAME-$SHORT_SWIFT_VERSION-$CI_COMMIT_TAG
+    elif [ "$CI_COMMIT_REF_NAME" = "$CI_DEFAULT_BRANCH" ]; then
+      IMAGE=$CI_REGISTRY_IMAGE:$BASENAME-$SHORT_SWIFT_VERSION-latest
+    else
+      IMAGE=$CI_REGISTRY_IMAGE:$BASENAME-$SHORT_SWIFT_VERSION-$CI_COMMIT_REF_NAME
+    fi
+    echo IMAGE: $IMAGE
     docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     docker build --pull -t $IMAGE --build-arg SWIFT_IMAGE=$SWIFT_IMAGE \
       -f Dockerfile.swift-5.9 .
@@ -95,9 +159,49 @@ build AppKid image:
       BASE_IMAGE=$CI_REGISTRY_IMAGE:basic-$SHORT_SWIFT_VERSION-$CI_COMMIT_REF_NAME
       IMAGE=$CI_REGISTRY_IMAGE:$BASENAME-$SHORT_SWIFT_VERSION-$CI_COMMIT_REF_NAME
     fi
+    echo BASE_IMAGE: $BASE_IMAGE
+    echo IMAGE: $IMAGE
     docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     docker build --pull -t $IMAGE --build-arg BASE_IMAGE=$BASE_IMAGE \
       -f Dockerfile.$BASENAME .
     docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     docker push $IMAGE
 
+
+build val image:
+  stage: derived
+  only:
+    - main
+    - tags
+    - branches
+  tags:
+    - spi-server-deploy
+  parallel:
+    matrix:
+      - SWIFT_VERSION:
+          # for the derived images we don't deal with Swift patch versions
+          - '5.9'
+          - '5.8'
+          - '5.7'
+          # - '5.6'  # val requires 5.7+ and llvm-15 fails to install on the image, so we skip 5.6
+  script: |
+    BASENAME=val
+    # for the derived images we don't deal with Swift patch versions
+    SHORT_SWIFT_VERSION=$SWIFT_VERSION
+    if [ -n "$CI_COMMIT_TAG" ]; then
+      BASE_IMAGE=$CI_REGISTRY_IMAGE:basic-jammy-$SHORT_SWIFT_VERSION-$CI_COMMIT_TAG
+      IMAGE=$CI_REGISTRY_IMAGE:$BASENAME-$SHORT_SWIFT_VERSION-$CI_COMMIT_TAG
+    elif [ "$CI_COMMIT_REF_NAME" = "$CI_DEFAULT_BRANCH" ]; then
+      BASE_IMAGE=$CI_REGISTRY_IMAGE:basic-jammy-$SHORT_SWIFT_VERSION-latest
+      IMAGE=$CI_REGISTRY_IMAGE:$BASENAME-$SHORT_SWIFT_VERSION-latest
+    else
+      BASE_IMAGE=$CI_REGISTRY_IMAGE:basic-jammy-$SHORT_SWIFT_VERSION-$CI_COMMIT_REF_NAME
+      IMAGE=$CI_REGISTRY_IMAGE:$BASENAME-$SHORT_SWIFT_VERSION-$CI_COMMIT_REF_NAME
+    fi
+    echo BASE_IMAGE: $BASE_IMAGE
+    echo IMAGE: $IMAGE
+    docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    docker build --pull -t $IMAGE --build-arg BASE_IMAGE=$BASE_IMAGE \
+      -f Dockerfile.$BASENAME .
+    docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    docker push $IMAGE
