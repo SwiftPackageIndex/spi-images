@@ -60,7 +60,7 @@ build 5.9 base image:
     fi
     docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     docker build --pull -t $IMAGE --build-arg SWIFT_IMAGE=$SWIFT_IMAGE \
-      -f Dockerfile.swift-image .
+      -f Dockerfile.swift-5.9 .
     docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     docker push $IMAGE
 
