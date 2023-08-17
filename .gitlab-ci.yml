@@ -80,7 +80,7 @@ build 5.9 focal base image:
   parallel:
     matrix:
       - SWIFT_IMAGE:
-          - swiftlang/swift@sha256:8019d8ab3de09d6707ad97c7d36e7e4f4cb45c04df99527ebd295d7cbea95b11  # swiftlang/swift:nightly-5.9-focal
+          - swiftlang/swift@sha256:f212429011a4c3592ffaa660fd78b5bc149e9df7920da02dfc0e7a761582fa10  # swiftlang/swift:nightly-5.9-focal 2023-08-16
   script: |
     BASENAME=basic
     SHORT_SWIFT_VERSION=5.9
