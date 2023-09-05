@@ -49,7 +49,7 @@ build 5.9 base image:
   parallel:
     matrix:
       - SWIFT_IMAGE:
-          - swiftlang/swift@sha256:33d9b7f97b2c195ba3ecebf2b2914de8cdcc2817960de73a3730beaa89061bb8  # swiftlang/swift:nightly-5.9-jammy (Aug 10, 2023)
+          - swiftlang/swift@sha256:c4b634f509a17121a570c6e36aaed2bdcae38c87d1d207c397c7135282638877  # swiftlang/swift:nightly-5.9-jammy (Aug 10, 2023)
   script: |
     BASENAME=basic
     SHORT_SWIFT_VERSION=5.9
