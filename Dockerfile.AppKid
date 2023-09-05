@@ -7,11 +7,11 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 
 RUN curl -sL https://packages.lunarg.com/lunarg-signing-key-pub.asc \
     | tee /etc/apt/trusted.gpg.d/lunarg.asc
-RUN curl -sL http://packages.lunarg.com/vulkan/lunarg-vulkan-focal.list \
-    | tee /etc/apt/sources.list.d/lunarg-vulkan-focal.list
+RUN curl -sL http://packages.lunarg.com/vulkan/lunarg-vulkan-jammy.list \
+    | tee /etc/apt/sources.list.d/lunarg-vulkan-jammy.list
 
 RUN export DEBIAN_FRONTEND=noninteractive \
-    && apt update && apt install -y\
+    && apt update && apt install -y \
     vulkan-sdk \
     libx11-dev \
  	libxi-dev \
@@ -19,8 +19,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
  	libcairo2-dev \
  	libpango1.0-dev \
  	libglib2.0-dev \
-    libpython3-dev \
-    libclang-12-dev
+    libclang-15-dev
 
 RUN mkdir -p /usr/local/lib/pkgconfig && curl -sL -o /usr/local/lib/pkgconfig/clang.pc \
     https://raw.githubusercontent.com/smumriak/AppKid/main/SupportingFiles/clang.pc
