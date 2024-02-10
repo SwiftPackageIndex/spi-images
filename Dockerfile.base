@@ -1,5 +1,5 @@
 ARG SWIFT_VERSION
-FROM swift:${SWIFT_VERSION}
+FROM swift:${SWIFT_VERSION}-jammy
 
 RUN apt-get update && apt-get install -y \
     libssl-dev \
