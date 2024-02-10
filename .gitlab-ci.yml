@@ -93,7 +93,7 @@ build wasm image:
     fi
     echo IMAGE: $IMAGE
     docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-    docker build --pull -t $IMAGE --build-arg SWIFT_VERSION=$SWIFT_VERSION \
+    docker build --pull -t $IMAGE --build-arg SWIFT_VERSION=$SHORT_SWIFT_VERSION \
       -f Dockerfile.$BASENAME .
     docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     docker push $IMAGE
