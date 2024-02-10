@@ -69,6 +69,36 @@ build base image:
 #     docker push $IMAGE
 
 
+build wasm image:
+  stage: base
+  only:
+    - main
+    - tags
+    - branches
+  tags:
+    - spi-server-deploy
+  parallel:
+    matrix:
+      - SWIFT_VERSION:
+          - '5.9.2'
+  script: |
+    BASENAME=wasm
+    SHORT_SWIFT_VERSION=${SWIFT_VERSION%.*}  # 5.7.3 -> 5.7
+    if [ -n "$CI_COMMIT_TAG" ]; then
+      IMAGE=$CI_REGISTRY_IMAGE:$BASENAME-$SHORT_SWIFT_VERSION-$CI_COMMIT_TAG
+    elif [ "$CI_COMMIT_REF_NAME" = "$CI_DEFAULT_BRANCH" ]; then
+      IMAGE=$CI_REGISTRY_IMAGE:$BASENAME-$SHORT_SWIFT_VERSION-latest
+    else
+      IMAGE=$CI_REGISTRY_IMAGE:$BASENAME-$SHORT_SWIFT_VERSION-$CI_COMMIT_REF_NAME
+    fi
+    echo IMAGE: $IMAGE
+    docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    docker build --pull -t $IMAGE --build-arg SWIFT_VERSION=$SHORT_SWIFT_VERSION \
+      -f Dockerfile.$BASENAME .
+    docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    docker push $IMAGE
+
+
 build AppKid image:
   stage: derived
   only:
