@@ -10,4 +10,8 @@ ARG ARCH=x86_64
 # jammy = ubuntu 22.04
 ARG PLATFORM=ubuntu22.04
 
-RUN swift experimental-sdk install "https://github.com/swiftwasm/swift/releases/download/swift-wasm-${TAG}/swift-wasm-${TAG}-${PLATFORM}_${ARCH}.artifactbundle.zip"
+RUN echo SWIFT_VERSION: ${SWIFT_VERSION}
+RUN echo TAG: ${TAG}
+RUN echo ARCH: ${ARCH}
+RUN echo PLATFORM: ${PLATFORM}
+RUN swift experimental-sdk install https://github.com/swiftwasm/swift/releases/download/swift-wasm-${TAG}/swift-wasm-${TAG}-${PLATFORM}_${ARCH}.artifactbundle.zip
