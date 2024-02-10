@@ -4,14 +4,14 @@ ARG SWIFT_VERSION
 FROM swiftlang/swift@sha256:a3a64f2e5fb0050281abe92ce5033d32f6e851dd242154b0b6733740ba0fde41
 
 # See https://github.com/swiftwasm/swift/releases
-ENV TAG=${SWIFT_VERSION}-SNAPSHOT-2024-02-08-a
+ENV TAG=$SWIFT_VERSION-SNAPSHOT-2024-02-08-a
 # options: aarch64 amd64
 ARG ARCH=x86_64
 # jammy = ubuntu 22.04
 ARG PLATFORM=ubuntu22.04
 
-RUN echo SWIFT_VERSION: ${SWIFT_VERSION}
-RUN echo TAG: ${TAG}
-RUN echo ARCH: ${ARCH}
-RUN echo PLATFORM: ${PLATFORM}
+RUN echo SWIFT_VERSION: $SWIFT_VERSION
+RUN echo TAG: $TAG
+RUN echo ARCH: $ARCH
+RUN echo PLATFORM: $PLATFORM
 RUN swift experimental-sdk install https://github.com/swiftwasm/swift/releases/download/swift-wasm-${TAG}/swift-wasm-${TAG}-${PLATFORM}_${ARCH}.artifactbundle.zip
