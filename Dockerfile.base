@@ -1,5 +1,7 @@
 ARG SWIFT_VERSION
-FROM swift:${SWIFT_VERSION}-jammy
+FROM swift:${SWIFT_VERSION}
+# Change this to -jammy once we drop 5.6 - swift:5.6.3-jammy does not exist
+# FROM swift:${SWIFT_VERSION}-jammy
 
 RUN apt-get update && apt-get install -y \
     libssl-dev \
