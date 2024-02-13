@@ -1,5 +1,6 @@
 # swiftlang/swift:nightly-jammy
 # Tag: swift-DEVELOPMENT-SNAPSHOT-2024-02-08-a
+# Swift version 5.11-dev (LLVM 87ace14daa2139a, Swift 8bb684628593220)
 FROM swiftlang/swift@sha256:bc03949471dfe27b7b22e78e0c3a622b014d9e002806883b5f0a8d6874c53754
 
 ARG SWIFT_VERSION
