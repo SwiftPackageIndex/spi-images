@@ -58,7 +58,7 @@ build wasm image:
   parallel:
     matrix:
       - SWIFT_VERSION:
-          - '5.9.2'
+          - '5.10'
   script: |
     BASENAME=wasm
     SHORT_SWIFT_VERSION=${SWIFT_VERSION%.*}  # 5.7.3 -> 5.7
