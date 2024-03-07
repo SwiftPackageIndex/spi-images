@@ -18,7 +18,7 @@ build base image:
     matrix:
       - SWIFT_VERSION:
           - '6.0.beta'
-          - '5.10.beta'
+          - '5.10.0'
           - '5.9.2'
           - '5.8.1'
           - '5.7.3'
@@ -37,9 +37,6 @@ build base image:
     if [ $SWIFT_VERSION = "6.0.beta" ]; then
       # swiftlang/swift:nightly-jammy swift-DEVELOPMENT-SNAPSHOT-2024-03-03-a
       SWIFT_IMAGE=swiftlang/swift@sha256:f4ea7ab93663beac44cc5ec1a3ffcc7a7c33b9d2cd2dec4ad98dd1a739717e39
-    elif [ $SWIFT_VERSION = "5.10.beta" ]; then
-      # swiftlang/swift:nightly-5.10-jammy
-      SWIFT_IMAGE=swiftlang/swift@sha256:0cc4c5d0a11bcd52476787883c662ce295a6b90d477156660918401f9ed98469
     else
       SWIFT_IMAGE=swift:$SWIFT_VERSION-jammy
     fi
@@ -63,7 +60,7 @@ build wasm image:
   parallel:
     matrix:
       - SWIFT_VERSION:
-          - '5.10.beta'
+          - '5.10.0'
   script: |
     BASENAME=wasm
     SHORT_SWIFT_VERSION=${SWIFT_VERSION%.*}  # 5.7.3 -> 5.7
