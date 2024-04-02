@@ -118,7 +118,7 @@ build AppKid image:
     docker push $IMAGE
 
 
-build val image:
+build hylo image:
   stage: derived
   only:
     - main
@@ -135,7 +135,7 @@ build val image:
           - '5.8'
           - '5.7'
   script: |
-    BASENAME=val
+    BASENAME=hylo
     # for the derived images we don't deal with Swift patch versions
     SHORT_SWIFT_VERSION=$SWIFT_VERSION
     if [ -n "$CI_COMMIT_TAG" ]; then
