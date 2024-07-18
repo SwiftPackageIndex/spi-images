@@ -1,14 +1,9 @@
-# swiftlang/swift:nightly-jammy
-# Tag: swift-DEVELOPMENT-SNAPSHOT-2024-02-08-a
-# Swift version 5.11-dev (LLVM 87ace14daa2139a, Swift 8bb684628593220)
-FROM swiftlang/swift@sha256:bc03949471dfe27b7b22e78e0c3a622b014d9e002806883b5f0a8d6874c53754
+ARG SWIFT_IMAGE
+FROM ${SWIFT_IMAGE}
 
 ARG SWIFT_VERSION
-# See https://github.com/swiftwasm/swift/releases
-ENV TAG=$SWIFT_VERSION-SNAPSHOT-2024-03-04-a
-# options: aarch64 x86_64
-ARG ARCH=x86_64
-# jammy = ubuntu 22.04
-ARG PLATFORM=ubuntu22.04
+ARG SDK_SNAPSHOT
 
-RUN swift experimental-sdk install https://github.com/swiftwasm/swift/releases/download/swift-wasm-${TAG}/swift-wasm-${TAG}-${PLATFORM}_${ARCH}.artifactbundle.zip
+ENV TAG=$SWIFT_VERSION-$SDK_SNAPSHOT
+
+RUN swift experimental-sdk install https://github.com/swiftwasm/swift/releases/download/swift-wasm-${TAG}/swift-wasm-${TAG}-wasm32-unknown-wasi.artifactbundle.zip
