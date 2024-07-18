@@ -60,6 +60,7 @@ build wasm image:
   parallel:
     matrix:
       - SWIFT_VERSION:
+          - '6.0.beta'
           - '5.10.0'
   script: |
     BASENAME=wasm
@@ -72,8 +73,19 @@ build wasm image:
       IMAGE=$CI_REGISTRY_IMAGE:$BASENAME-$SHORT_SWIFT_VERSION-$CI_COMMIT_REF_NAME
     fi
     echo IMAGE: $IMAGE
+    
+    if [ $SWIFT_VERSION = "6.0.beta" ]; then
+      # swiftlang/swift:nightly-6.0-jammy swift-6.0-DEVELOPMENT-SNAPSHOT-2024-07-07-a
+      SWIFT_IMAGE=swiftlang/swift@sha256:c0ba23ba9871be0552d48c5e98f363bf606858aedca11bf557bc0adde12bbc60
+    else
+      SWIFT_IMAGE=swift:$SWIFT_VERSION-jammy
+    fi
+    echo SWIFT_IMAGE: $SWIFT_IMAGE
+    
     docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-    docker build --pull -t $IMAGE --build-arg SWIFT_VERSION=$SHORT_SWIFT_VERSION \
+    docker build --pull -t $IMAGE \
+      --build-arg SWIFT_VERSION=$SHORT_SWIFT_VERSION \
+      --build-arg SWIFT_IMAGE=$SWIFT_IMAGE \
       -f Dockerfile.$BASENAME .
     docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     docker push $IMAGE
