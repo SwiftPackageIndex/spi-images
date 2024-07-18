@@ -4,9 +4,5 @@ FROM ${SWIFT_IMAGE}
 ARG SWIFT_VERSION
 # See https://github.com/swiftwasm/swift/releases
 ENV TAG=$SWIFT_VERSION-SNAPSHOT-2024-07-07-a
-# options: aarch64 x86_64
-ARG ARCH=x86_64
-# jammy = ubuntu 22.04
-ARG PLATFORM=ubuntu22.04
 
-RUN swift experimental-sdk install https://github.com/swiftwasm/swift/releases/download/swift-wasm-${TAG}/swift-wasm-${TAG}-${PLATFORM}_${ARCH}.artifactbundle.zip
+RUN swift experimental-sdk install https://github.com/swiftwasm/swift/releases/download/swift-wasm-${TAG}/swift-wasm-${TAG}-wasm32-unknown-wasi.artifactbundle.zip
