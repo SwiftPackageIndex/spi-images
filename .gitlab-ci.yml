@@ -35,8 +35,8 @@ build base image:
     echo IMAGE: $IMAGE
     
     if [ $SWIFT_VERSION = "6.0.beta" ]; then
-      # swiftlang/swift:nightly-6.0-jammy swift-6.0-DEVELOPMENT-SNAPSHOT-2024-07-21-a
-      SWIFT_IMAGE=swiftlang/swift@sha256:44ac1fde0e49e8d0a4aa539d79c6e32fd3c90f7b1f5a210bcca2ee25e02ebd62
+      # swiftlang/swift:nightly-6.0-jammy swift-6.0-DEVELOPMENT-SNAPSHOT-2024-08-02-a
+      SWIFT_IMAGE=swiftlang/swift@sha256:46f2104e30336322e693e378b78643be946c21c25be597090abe0a4b04132e02
     else
       SWIFT_IMAGE=swift:$SWIFT_VERSION-jammy
     fi
