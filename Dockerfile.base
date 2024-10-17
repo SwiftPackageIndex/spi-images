@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y \
     zlib1g-dev               `# SwiftUSD` \
     python3-dev              `# SwiftUSD` \
     libboost-all-dev         `# SwiftUSD` \
-    libsystemd-dev           `# swift-systemd`
+    libsystemd-dev           `# swift-systemd` \
+    libncurses5-dev          `# SwiftCurses`
 
 RUN git config --global init.defaultBranch main
