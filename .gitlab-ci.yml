@@ -17,11 +17,11 @@ build base image:
   parallel:
     matrix:
       - SWIFT_VERSION:
+          - '6.1.0'
           - '6.0.3'
           - '5.10.0'
           - '5.9.2'
           - '5.8.1'
-          - '5.7.3'
   script: |
     BASENAME=basic
     SHORT_SWIFT_VERSION=${SWIFT_VERSION%.*}  # 5.7.3 -> 5.7
@@ -107,10 +107,10 @@ build AppKid image:
     matrix:
       - SWIFT_VERSION:
           # for the derived images we don't deal with Swift patch versions
+          - '6.1'
+          - '6.0'
           - '5.10'
           - '5.9'
-          - '5.8'
-          - '5.7'
   script: |
     BASENAME=AppKid
     # for the derived images we don't deal with Swift patch versions
@@ -147,10 +147,10 @@ build hylo image:
     matrix:
       - SWIFT_VERSION:
           # for the derived images we don't deal with Swift patch versions
+          - '6.1'
+          - '6.0'
           - '5.10'
           - '5.9'
-          - '5.8'
-          - '5.7'
   script: |
     BASENAME=hylo
     # for the derived images we don't deal with Swift patch versions
@@ -186,10 +186,11 @@ build adwaita image:
     parallel:
       matrix:
         - SWIFT_VERSION:
+            # keep patch versions here, the Dockerfile requires them
+            - '6.1.0'
+            - '6.0.3'
             - '5.10.0'
             - '5.9.2'
-            - '5.8.1'
-            - '5.7.3'
     script: |
       BASENAME=adwaita
       SHORT_SWIFT_VERSION=${SWIFT_VERSION%.*}  # 5.7.3 -> 5.7
