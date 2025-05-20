@@ -82,7 +82,7 @@ build wasm image:
     docker build --pull -t $IMAGE \
       --build-arg SWIFT_VERSION=$SHORT_SWIFT_VERSION \
       --build-arg SWIFT_IMAGE=$SWIFT_IMAGE \
-      --build-arg CHECKSUM="$CHECKSUM[$SWIFT_VERSION]" \
+      --build-arg CHECKSUM="${CHECKSUM[$SWIFT_VERSION]}" \
       -f Dockerfile.$BASENAME .
 
     docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
