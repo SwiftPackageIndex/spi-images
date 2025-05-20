@@ -56,11 +56,11 @@ build wasm image:
   parallel:
     matrix:
       - SWIFT_VERSION:
-          - '6.1'
+          - '6.1.0'
   script: |
     # Checksums are required, match versions to SWIFT_VERSION above
     declare -A CHECKSUM=(
-      ["6.1"]="7550b4c77a55f4b637c376f5d192f297fe185607003a6212ad608276928db992"
+      ["6.1.0"]="7550b4c77a55f4b637c376f5d192f297fe185607003a6212ad608276928db992"
     )
     
     BASENAME=wasm
