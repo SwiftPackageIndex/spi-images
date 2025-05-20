@@ -81,13 +81,14 @@ build wasm image:
     echo SWIFT_IMAGE: $SWIFT_IMAGE
     
     case $SWIFT_VERSION in
-      "*.0")
+      *.0)
         WASM_SWIFT_VERSION=$SHORT_SWIFT_VERSION
         ;;
       *)
         WASM_SWIFT_VERSION=$SWIFT_VERSION
         ;;
     esac
+    echo WASM_SWIFT_VERSION: $WASM_SWIFT_VERSION
     
     docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     docker build --pull -t $IMAGE \
