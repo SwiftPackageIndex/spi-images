@@ -59,7 +59,9 @@ build wasm image:
           - '6.1'
   script: |
     # Checksums are required, match versions to SWIFT_VERSION above
-    CHECKSUM["6.1"] = 7550b4c77a55f4b637c376f5d192f297fe185607003a6212ad608276928db992
+    declare -A CHECKSUM=(
+      ["6.1"]="7550b4c77a55f4b637c376f5d192f297fe185607003a6212ad608276928db992"
+    )
     
     BASENAME=wasm
     
