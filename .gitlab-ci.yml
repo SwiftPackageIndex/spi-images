@@ -237,6 +237,8 @@ build hylo image:
     docker system prune -f
 
 
+# For https://git.aparoksha.dev/aparoksha/adwaita-swift
+# Package has moved off GH and isn't in the index anymore.
 build adwaita image:
     stage: base
     only:
