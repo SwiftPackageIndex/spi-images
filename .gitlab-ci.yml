@@ -17,7 +17,8 @@ build base image:
   parallel:
     matrix:
       - SWIFT_VERSION:
-          - '6.1.0'
+          - '6.2.beta'
+          - '6.1.1'
           - '6.0.3'
           - '5.10.0'
           - '5.9.2'
@@ -34,7 +35,11 @@ build base image:
     fi
     echo IMAGE: $IMAGE
     
-    SWIFT_IMAGE=swift:$SWIFT_VERSION-jammy
+    if [ $SWIFT_VERSION = "6.2.beta" ]; then
+      SWIFT_IMAGE=swiftlang/swift@sha256:c40cd00d376c8a06fd4769cadd6d6cfa7c205275437b795b564ecea3d8b8f913  # swift-6.2-DEVELOPMENT-SNAPSHOT-2025-05-30-a
+    else
+      SWIFT_IMAGE=swift:$SWIFT_VERSION-jammy
+    fi
     echo SWIFT_IMAGE: $SWIFT_IMAGE
 
     docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
