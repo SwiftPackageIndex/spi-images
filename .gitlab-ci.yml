@@ -118,13 +118,9 @@ build android image:
   parallel:
     matrix:
       - SWIFT_VERSION:
+          - '6.2.beta'
           - '6.1.0'
   script: |
-    # Checksums are required, match versions to SWIFT_VERSION above
-    declare -A CHECKSUM=(
-      ["6.1.0"]="f8696e3e84111b8c2c6f6e564b6266357987ea8d4aa3b2cf92f144357acde1c9"
-    )
-    
     BASENAME=android
     
     SHORT_SWIFT_VERSION=${SWIFT_VERSION%.*}  # 5.7.3 -> 5.7
@@ -141,20 +137,25 @@ build android image:
     echo SWIFT_IMAGE: $SWIFT_IMAGE
     
     case $SWIFT_VERSION in
-      *.0)
-        ANDROID_SWIFT_VERSION=$SHORT_SWIFT_VERSION
+      6.2.beta)
+        SDK_URL=https://source.skip.tools/swift-android-toolchain/releases/download/6.2-DEVELOPMENT-SNAPSHOT-2025-05-15-a/swift-6.2-DEVELOPMENT-SNAPSHOT-2025-05-15-a-android-0.1.artifactbundle.tar.gz
+        CHECKSUM=e78b7f2df9fe4775325a7a1fd557144e466b4bb43f29ed441fc8922dc98dfd3f
+        ;;
+      6.1.0)
+        SDK_URL=https://source.skip.tools/swift-android-toolchain/releases/download/6.1/swift-6.1-RELEASE-android-24-0.1.artifactbundle.tar.gz
+        CHECKSUM=f8696e3e84111b8c2c6f6e564b6266357987ea8d4aa3b2cf92f144357acde1c9
         ;;
       *)
-        ANDROID_SWIFT_VERSION=$SWIFT_VERSION
+        echo Unsupported Swift version: $SWIFT_VERSION
+        exit 1
         ;;
     esac
-    echo ANDROID_SWIFT_VERSION: $ANDROID_SWIFT_VERSION
     
     docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     docker build --pull -t $IMAGE \
-      --build-arg SWIFT_VERSION=$ANDROID_SWIFT_VERSION \
       --build-arg SWIFT_IMAGE=$SWIFT_IMAGE \
-      --build-arg CHECKSUM="${CHECKSUM[$SWIFT_VERSION]}" \
+      --build-arg SDK_URL=$SDK_URL \
+      --build-arg CHECKSUM=$CHECKSUM \
       -f Dockerfile.$BASENAME .
 
     docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
