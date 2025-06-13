@@ -1,10 +1,9 @@
 ARG SWIFT_IMAGE
 FROM ${SWIFT_IMAGE}
 
-ARG SWIFT_VERSION
-ARG SDK_SNAPSHOT
+ARG SDK_URL
 ARG CHECKSUM
 
 ENV TAG=${SWIFT_VERSION}-RELEASE
 
-RUN swift sdk install https://github.com/swiftwasm/swift/releases/download/swift-wasm-${TAG}/swift-wasm-${TAG}-wasm32-unknown-wasi.artifactbundle.zip --checksum ${CHECKSUM}
+RUN swift sdk install ${SDK_URL} --checksum ${CHECKSUM}
