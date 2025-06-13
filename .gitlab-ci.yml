@@ -137,9 +137,7 @@ build android image:
     
     case $SWIFT_VERSION in
       6.2.beta)
-        SWIFT_IMAGE=swiftlang/swift@sha256:c40cd00d376c8a06fd4769cadd6d6cfa7c205275437b795b564ecea3d8b8f913  # swift-6.2-DEVELOPMENT-SNAPSHOT-2025-05-30-a
-        SDK_URL=https://source.skip.tools/swift-android-toolchain/releases/download/6.2-DEVELOPMENT-SNAPSHOT-2025-05-15-a/swift-6.2-DEVELOPMENT-SNAPSHOT-2025-05-15-a-android-0.1.artifactbundle.tar.gz
-        CHECKSUM=e78b7f2df9fe4775325a7a1fd557144e466b4bb43f29ed441fc8922dc98dfd3f
+        # all variables are hardcoded in Dockerfile.android-6.2 for now
         ;;
       6.1.0)
         SDK_URL=https://source.skip.tools/swift-android-toolchain/releases/download/6.1/swift-6.1-RELEASE-android-24-0.1.artifactbundle.tar.gz
@@ -158,7 +156,7 @@ build android image:
       --build-arg SWIFT_IMAGE=$SWIFT_IMAGE \
       --build-arg SDK_URL=$SDK_URL \
       --build-arg CHECKSUM=$CHECKSUM \
-      -f Dockerfile.$BASENAME .
+      -f Dockerfile.$BASENAME-$SHORT_SWIFT_VERSION .
 
     docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     docker push $IMAGE
