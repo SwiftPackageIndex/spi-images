@@ -62,6 +62,7 @@ build wasm image:
     matrix:
       - SWIFT_VERSION:
           # Make sure these are handled in the case statement below
+          - '6.2.beta'
           - '6.1.0'
           - '6.0.3'
   script: |
@@ -78,9 +79,16 @@ build wasm image:
     echo IMAGE: $IMAGE
     
     SWIFT_IMAGE=swift:$SWIFT_VERSION-jammy
-    
+    DOCKERFILE=Dockerfile.$BASENAME
     
     case $SWIFT_VERSION in
+      6.2.beta)
+        SWIFT_IMAGE=swiftlang/swift@sha256:c40cd00d376c8a06fd4769cadd6d6cfa7c205275437b795b564ecea3d8b8f913  # swift-6.2-DEVELOPMENT-SNAPSHOT-2025-05-30-a
+        TAG=swift-6.2-DEVELOPMENT-SNAPSHOT-2025-05-30-a
+        SDK_URL=https://download.swift.org/swift-6.2-branch/wasm-sdk/${TAG}/${TAG}_wasm.artifactbundle.tar.gz
+        CHECKSUM=c55777bd47790c9ee728380b4d4e145153f805432775511777ac89d07b559226
+        DOCKERFILE=Dockerfile.$BASENAME-6.2
+        ;;
       6.1.0)
         RELEASE_TAG=6.1-RELEASE
         SDK_URL=https://github.com/swiftwasm/swift/releases/download/swift-wasm-${RELEASE_TAG}/swift-wasm-${RELEASE_TAG}-wasm32-unknown-wasi.artifactbundle.zip
@@ -94,13 +102,14 @@ build wasm image:
     esac
     
     echo SWIFT_IMAGE: $SWIFT_IMAGE
+    echo DOCKERFILE: $DOCKERFILE
     
     docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     docker build --pull -t $IMAGE \
       --build-arg SWIFT_IMAGE=$SWIFT_IMAGE \
       --build-arg SDK_URL=$SDK_URL \
       --build-arg CHECKSUM=$CHECKSUM \
-      -f Dockerfile.$BASENAME .
+      -f $DOCKERFILE .
 
     docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     docker push $IMAGE
