@@ -1,0 +1,7 @@
+ARG SWIFT_IMAGE
+FROM ${SWIFT_IMAGE}
+
+ARG SDK_URL
+ARG CHECKSUM
+
+RUN swift sdk install ${SDK_URL} --checksum ${CHECKSUM}
