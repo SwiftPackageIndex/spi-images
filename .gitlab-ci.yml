@@ -184,10 +184,10 @@ build hylo image:
     matrix:
       - SWIFT_VERSION:
           # for the derived images we don't deal with Swift patch versions
+          - '6.2'
           - '6.1'
           - '6.0'
           - '5.10'
-          - '5.9'
   script: |
     BASENAME=hylo
     # for the derived images we don't deal with Swift patch versions
