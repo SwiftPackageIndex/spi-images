@@ -1,10 +1,7 @@
 ARG SWIFT_IMAGE
 FROM ${SWIFT_IMAGE}
 
-ARG SWIFT_VERSION
-ARG SDK_SNAPSHOT
+ARG SDK_URL
 ARG CHECKSUM
 
-ENV TAG=${SWIFT_VERSION}-RELEASE
-
-RUN swift sdk install https://source.skip.tools/swift-android-toolchain/releases/download/${SWIFT_VERSION}/swift-${TAG}-android-24-0.1.artifactbundle.tar.gz --checksum ${CHECKSUM}
+RUN swift sdk install ${SDK_URL} --checksum ${CHECKSUM}
