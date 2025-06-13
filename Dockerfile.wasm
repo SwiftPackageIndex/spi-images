@@ -6,4 +6,8 @@ ARG CHECKSUM
 
 ENV TAG=${SWIFT_VERSION}-RELEASE
 
+ENV DEBIAN_FRONTEND=noninteractive 
+
+RUN apt-get update -y && apt-get install -y curl file
+
 RUN swift sdk install ${SDK_URL} --checksum ${CHECKSUM}
