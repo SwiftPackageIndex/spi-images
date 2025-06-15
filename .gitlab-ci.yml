@@ -77,7 +77,6 @@ build wasm image:
     echo IMAGE: $IMAGE
     
     SWIFT_IMAGE=swift:$SWIFT_VERSION-jammy
-    DOCKERFILE=Dockerfile.$BASENAME
     
     case $SWIFT_VERSION in
       6.2.beta)
@@ -85,16 +84,15 @@ build wasm image:
         TAG=swift-6.2-DEVELOPMENT-SNAPSHOT-2025-05-30-a
         SDK_URL=https://download.swift.org/swift-6.2-branch/wasm-sdk/${TAG}/${TAG}_wasm.artifactbundle.tar.gz
         CHECKSUM=c55777bd47790c9ee728380b4d4e145153f805432775511777ac89d07b559226
-        DOCKERFILE=Dockerfile.$BASENAME-6.2
         ;;
       6.1.0)
-        RELEASE_TAG=6.1-RELEASE
-        SDK_URL=https://github.com/swiftwasm/swift/releases/download/swift-wasm-${RELEASE_TAG}/swift-wasm-${RELEASE_TAG}-wasm32-unknown-wasi.artifactbundle.zip
+        TAG=6.1-RELEASE
+        SDK_URL=https://github.com/swiftwasm/swift/releases/download/swift-wasm-${TAG}/swift-wasm-${TAG}-wasm32-unknown-wasi.artifactbundle.zip
         CHECKSUM=7550b4c77a55f4b637c376f5d192f297fe185607003a6212ad608276928db992
         ;;
       6.0.3)
-        RELEASE_TAG=${SWIFT_VERSION}-RELEASE
-        SDK_URL=https://github.com/swiftwasm/swift/releases/download/swift-wasm-${RELEASE_TAG}/swift-wasm-${RELEASE_TAG}-wasm32-unknown-wasi.artifactbundle.zip
+        TAG=${SWIFT_VERSION}-RELEASE
+        SDK_URL=https://github.com/swiftwasm/swift/releases/download/swift-wasm-${TAG}/swift-wasm-${TAG}-wasm32-unknown-wasi.artifactbundle.zip
         CHECKSUM=31d3585b06dd92de390bacc18527801480163188cd7473f492956b5e213a8618
         ;;
     esac
@@ -107,7 +105,7 @@ build wasm image:
       --build-arg SWIFT_IMAGE=$SWIFT_IMAGE \
       --build-arg SDK_URL=$SDK_URL \
       --build-arg CHECKSUM=$CHECKSUM \
-      -f $DOCKERFILE .
+      -f Dockerfile.$BASENAME .
 
     docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     docker push $IMAGE
