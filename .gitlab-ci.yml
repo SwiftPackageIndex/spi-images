@@ -41,11 +41,19 @@ build base image:
     echo SWIFT_IMAGE: $SWIFT_IMAGE
 
     docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-    docker build --pull -t $IMAGE --build-arg SWIFT_IMAGE=$SWIFT_IMAGE \
+
+    echo "Removing container-builder (will be recreated). This might log an error if the container-builder wasn't running."
+    docker buildx rm -f container-builder || true
+    docker buildx create \
+      --name container-builder \
+      --driver docker-container \
+      --bootstrap --use
+
+    docker buildx build --platform=linux/amd64,linux/arm64 --pull --push -t $IMAGE --build-arg SWIFT_IMAGE=$SWIFT_IMAGE \
       -f Dockerfile.base .
-    docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-    docker push $IMAGE
-    docker system prune -f
+
+    docker buildx rm -f container-builder || true
+    docker system prune -f || true
 
 
 build wasm image:
