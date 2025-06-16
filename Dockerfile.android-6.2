@@ -26,7 +26,12 @@ RUN cd /usr/local/bin && ln -s $HOME/.local/share/swiftly/bin/swiftly
 
 RUN swiftly install 6.2-snapshot-2025-05-15-a
 
-RUN swiftly run swift sdk install https://source.skip.tools/swift-android-toolchain/releases/download/6.2-DEVELOPMENT-SNAPSHOT-2025-05-15-a/swift-6.2-DEVELOPMENT-SNAPSHOT-2025-05-15-a-android-0.1.artifactbundle.tar.gz --checksum e78b7f2df9fe4775325a7a1fd557144e466b4bb43f29ed441fc8922dc98dfd3f
+ENV SWIFTLY_HOME_DIR="/root/.local/share/swiftly"
+ENV SWIFTLY_BIN_DIR="/root/.local/share/swiftly/bin"
+ENV SWIFTLY_TOOLCHAINS_DIR="/root/.local/share/swiftly/toolchains"
+ENV PATH="$SWIFTLY_BIN_DIR:$PATH"
+
+RUN swift sdk install https://source.skip.tools/swift-android-toolchain/releases/download/6.2-DEVELOPMENT-SNAPSHOT-2025-05-15-a/swift-6.2-DEVELOPMENT-SNAPSHOT-2025-05-15-a-android-0.1.artifactbundle.tar.gz --checksum e78b7f2df9fe4775325a7a1fd557144e466b4bb43f29ed441fc8922dc98dfd3f
 
 ENV NDK_DOWNLOAD_DIR=/android-ndk
 RUN mkdir $NDK_DOWNLOAD_DIR
