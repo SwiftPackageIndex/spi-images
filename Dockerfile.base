@@ -11,6 +11,11 @@ RUN apt-get update && apt-get install -y \
     python3-dev              `# SwiftUSD` \
     libboost-all-dev         `# SwiftUSD` \
     libsystemd-dev           `# swift-systemd` \
-    libncurses5-dev          `# SwiftCurses`
+    libncurses5-dev          `# SwiftCurses` \
+    curl                     `# swift-java (to install sdkman)`
 
 RUN git config --global init.defaultBranch main
+
+# install JDK (for swift-java)
+RUN curl -s "https://get.sdkman.io" | bash
+RUN sdk install java 24.0.1-amzn --use
