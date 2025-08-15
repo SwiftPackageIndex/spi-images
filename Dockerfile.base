@@ -18,4 +18,5 @@ RUN git config --global init.defaultBranch main
 
 # install JDK (for swift-java)
 RUN curl -s "https://get.sdkman.io" | bash
+RUN source "$HOME/.sdkman/bin/sdkman-init.sh"
 RUN sdk install java 24.0.1-amzn --use
