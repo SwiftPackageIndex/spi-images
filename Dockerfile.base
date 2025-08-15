@@ -1,6 +1,9 @@
 ARG SWIFT_IMAGE
 FROM ${SWIFT_IMAGE}
 
+# use bash so we can run `source`
+SHELL ["/bin/bash", "-c"]
+
 RUN apt-get update && apt-get install -y \
     libssl-dev \
     sqlite3 libsqlite3-dev   `# SPI-Server` \
