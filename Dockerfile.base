@@ -1,9 +1,6 @@
 ARG SWIFT_IMAGE
 FROM ${SWIFT_IMAGE}
 
-# use bash so we can run `source`
-SHELL ["/bin/bash", "-c"]
-
 RUN apt-get update && apt-get install -y \
     libssl-dev \
     sqlite3 libsqlite3-dev   `# SPI-Server` \
@@ -21,5 +18,5 @@ RUN git config --global init.defaultBranch main
 
 # install JDK (for swift-java)
 RUN curl -s "https://get.sdkman.io" | bash
-RUN source "$HOME/.sdkman/bin/sdkman-init.sh"
+RUN . "$HOME/.sdkman/bin/sdkman-init.sh"
 RUN sdk install java 24.0.1-amzn --use
