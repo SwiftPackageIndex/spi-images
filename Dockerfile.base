@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y \
     libboost-all-dev         `# SwiftUSD` \
     libsystemd-dev           `# swift-systemd` \
     libncurses5-dev          `# SwiftCurses` \
-    curl                     `# swift-java (to install sdkman)`
+    curl unzip               `# swift-java (to install sdkman)`
 
 RUN git config --global init.defaultBranch main
 
