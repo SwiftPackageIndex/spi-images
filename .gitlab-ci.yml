@@ -45,7 +45,7 @@ build base image:
       -f Dockerfile.base .
     docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     docker push $IMAGE
-    docker system prune -f
+    docker system prune -f || true
 
 
 build wasm image:
@@ -109,7 +109,7 @@ build wasm image:
 
     docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     docker push $IMAGE
-    docker system prune -f
+    docker system prune -f || true
 
 
 build android image:
@@ -167,7 +167,7 @@ build android image:
 
     docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     docker push $IMAGE
-    docker system prune -f
+    docker system prune -f || true
 
 
 build hylo image:
@@ -207,4 +207,4 @@ build hylo image:
       -f Dockerfile.$BASENAME .
     docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     docker push $IMAGE
-    docker system prune -f
+    docker system prune -f || true
