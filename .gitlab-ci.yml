@@ -123,7 +123,9 @@ build android image:
   parallel:
     matrix:
       - SWIFT_VERSION:
-          - '6.2.beta'
+          # skip building new 6.2 Android image - Swift SDK bundle is not available anymore
+          # https://gitlab.com/finestructure/spi-images/-/jobs/11037836473
+          # - '6.2.beta'
           - '6.1.0'
   script: |
     BASENAME=android
