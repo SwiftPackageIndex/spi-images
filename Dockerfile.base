@@ -6,11 +6,13 @@ RUN apt-get update && apt-get install -y \
     sqlite3 libsqlite3-dev   `# SPI-Server` \
     libcurl4-openssl-dev     `# SPI-Server` \
     libjemalloc-dev          `# ordo-one/package-benchmark` \
-    libbz2-dev               `# SwiftUSD` \
-    zlib1g-dev               `# SwiftUSD` \
-    python3-dev              `# SwiftUSD` \
-    libboost-all-dev         `# SwiftUSD` \
     libsystemd-dev           `# swift-systemd` \
-    libncurses5-dev          `# SwiftCurses`
+    libncurses5-dev          `# SwiftCurses` \
+    curl unzip zip           `# swift-java (to install sdkman)`
 
 RUN git config --global init.defaultBranch main
+
+# install JDK (for swift-java)
+RUN curl -s "https://get.sdkman.io" | bash
+SHELL ["/bin/bash", "-c"]
+RUN source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk install java 24.0.1-amzn --use
