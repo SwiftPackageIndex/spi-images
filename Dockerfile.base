@@ -8,7 +8,8 @@ RUN apt-get update && apt-get install -y \
     libjemalloc-dev          `# ordo-one/package-benchmark` \
     libsystemd-dev           `# swift-systemd` \
     libncurses5-dev          `# SwiftCurses` \
-    curl unzip zip           `# swift-java (to install sdkman)`
+    curl unzip zip           `# swift-java (to install sdkman)` \
+    libc++-dev libc++abi-dev `# SwiftLuau (and probably any pkg using C++)
 
 RUN git config --global init.defaultBranch main
 
