@@ -1,0 +1,8 @@
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE}
+
+# custom DocC Executable
+RUN mkdir -p /opt/swift-docc
+RUN git clone https://github.com/d-ronnqvist/swift-docc.git /opt/swift-docc
+RUN swift build --package-path /opt/swift-docc
+ENV DOCC_EXEC=/opt/swift-docc/.build/debug/docc
