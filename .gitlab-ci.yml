@@ -42,7 +42,7 @@ build base image:
 
     docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     docker build --pull -t $IMAGE --build-arg SWIFT_IMAGE=$SWIFT_IMAGE \
-      -f Dockerfile.base .
+      -f Dockerfile.$BASENAME .
     docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     docker push $IMAGE
     docker system prune -f || true
