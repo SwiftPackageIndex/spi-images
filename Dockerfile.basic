@@ -3,13 +3,14 @@ FROM ${SWIFT_IMAGE}
 
 RUN apt-get update && apt-get install -y \
     libssl-dev \
-    sqlite3 libsqlite3-dev   `# SPI-Server` \
-    libcurl4-openssl-dev     `# SPI-Server` \
-    libjemalloc-dev          `# ordo-one/package-benchmark` \
-    libsystemd-dev           `# swift-systemd` \
-    libncurses5-dev          `# SwiftCurses` \
-    curl unzip zip           `# swift-java (to install sdkman)` \
-    libc++-dev libc++abi-dev `# SwiftLuau (and probably any pkg using C++)`
+    sqlite3 libsqlite3-dev        `# SPI-Server` \
+    libcurl4-openssl-dev          `# SPI-Server` \
+    libjemalloc-dev               `# ordo-one/package-benchmark` \
+    libsystemd-dev                `# swift-systemd` \
+    libncurses5-dev               `# SwiftCurses` \
+    curl unzip zip                `# swift-java (to install sdkman)` \
+    libc++-dev libc++abi-dev      `# SwiftLuau (and probably any pkg using C++)` \
+    libjavascriptcoregtk-4.1-dev  `# loopwerk/Moon`
 
 RUN git config --global init.defaultBranch main
 
